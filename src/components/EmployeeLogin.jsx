@@ -1,23 +1,40 @@
-import {
-  Box,
-  Button,
-  Container,
-  Flex,
-  FormControl,
-  FormLabel,
-  HStack,
-  Input,
-  VStack,
-} from "@chakra-ui/react";
+import { Box, Button, Container, Flex, FormControl, FormLabel, HStack, Input, VStack } from "@chakra-ui/react";
 import { useState } from "react";
-
+import { EmployeePage } from "./EmployeePage";
+import { useNavigate } from "react-router-dom";
 export const EmployeeLogin = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  
+  const admins = [
+    {
+        user:'rajesh',
+        pass:'123456'
+    },
+    {
+        user:'demo',
+        pass:'1234'
+    },
+    { 
+        user:'abhitest',
+        pass:'abhi123'
+
+    }
+  ]
+
+  const navigate = useNavigate();
+
   const logger = () => {
     console.log("username: " + username + "\n" + "password :" + password);
+    // Check if the password matches any of the predefined passwords
+    const isValidAdmin = admins.some(admin => admin.user === username && admin.pass === password);
+    if (isValidAdmin) {
+      // If the password matches, redirect to the EmployeePage
+      navigate('/employe');
+    }
   };
-  const resetForm = () => {
+
+  const handleReset = () => {
     setUsername("");
     setPassword("");
   };
@@ -50,6 +67,7 @@ export const EmployeeLogin = () => {
               <FormLabel fontSize="lg">Username</FormLabel>
               <Input
                 type="text"
+                value={username}
                 onChange={(e) => {
                   setUsername(e.target.value);
                 }}
@@ -59,13 +77,14 @@ export const EmployeeLogin = () => {
               <FormLabel fontSize="lg">Password</FormLabel>
               <Input
                 type="password"
+                value={password}
                 onChange={(e) => {
                   setPassword(e.target.value);
                 }}
               />
             </FormControl>
             <HStack spacing={10}>
-              <Button variant={"outline"} colorScheme="green" onClick={resetForm}>
+              <Button variant={"outline"} colorScheme="green" onClick={handleReset}>
                 Reset
               </Button>
               <Button variant={"solid"} colorScheme="red" onClick={logger}>
