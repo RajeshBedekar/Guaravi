@@ -1,6 +1,5 @@
 import { Box, Button, Container, Flex, FormControl, FormLabel, HStack, Input, VStack } from "@chakra-ui/react";
 import { useState } from "react";
-import { EmployeePage } from "./EmployeePage";
 import { useNavigate } from "react-router-dom";
 export const EmployeeLogin = () => {
   const [username, setUsername] = useState("");
