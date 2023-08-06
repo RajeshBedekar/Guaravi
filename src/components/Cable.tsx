@@ -1,5 +1,38 @@
-import { useState } from "react";
-import { Box, Flex, Heading, FormControl, FormLabel, Input, Button, VStack, Image } from "@chakra-ui/react";
+// Import required modules from firebase
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+import { getFirestore, collection, addDoc, getDocs } from "firebase/firestore"; // Import the firestore module
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyA-7pcz2Q3WzYIPmhMU0AODw1Alj2rIsb4",
+  authDomain: "rajesh-a9b6c.firebaseapp.com",
+  projectId: "rajesh-a9b6c",
+  storageBucket: "rajesh-a9b6c.appspot.com",
+  messagingSenderId: "98139337932",
+  appId: "1:98139337932:web:74f4c73f41b77da8c5be69",
+  measurementId: "G-KM7FBCD16W",
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+const firestore = getFirestore(); // Get the Firestore instance
+
+// Import Chakra UI components
+import React, { useState, useEffect } from "react";
+import {
+  Box,
+  Flex,
+  Heading,
+  FormControl,
+  FormLabel,
+  Input,
+  Button,
+  VStack,
+  Image,
+  Text,
+} from "@chakra-ui/react";
 
 const Cable = () => {
   const [formData, setFormData] = useState({
@@ -13,6 +46,7 @@ const Cable = () => {
   });
 
   const [selectedImage, setSelectedImage] = useState(null);
+  const [cableData, setCableData] = useState([]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -26,110 +60,164 @@ const Cable = () => {
     }
   };
 
+  // Function to save the form data to Firebase Firestore
+  const handleSave = async () => {
+    try {
+      // Save the formData to Firestore collection (assuming you have a collection named "cableData")
+      await addDoc(collection(firestore, "cableData"), formData);
+      alert("Data saved successfully!");
+      // Fetch data again after saving to show the updated list
+      fetchCableData();
+    } catch (error) {
+      console.error("Error saving data:", error);
+    }
+  };
+
+  // Function to fetch the data from Firebase Firestore
+  const fetchCableData = async () => {
+    try {
+      const querySnapshot = await getDocs(collection(firestore, "cableData"));
+      const data = querySnapshot.docs.map((doc) => doc.data());
+      setCableData(data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  // Fetch data on component mount
+  useEffect(() => {
+    fetchCableData();
+  }, []);
+
   return (
-    <Flex maxW="800px" mx="auto" p={4}>
-      {/* Sidebar */}
-      <VStack spacing={4} p={4} bg="gray.200" borderRadius="md" mr={8}>
-        <Heading as="h2" size="lg">
-          Cable TV
-        </Heading>
-        {/* Customer Name */}
-        <FormControl>
-          <FormLabel>Customer Name</FormLabel>
-          <Input name="customerName" value={formData.customerName} onChange={handleInputChange} placeholder="Enter Customer Name" />
-        </FormControl>
-
-        <FormControl>
-          <FormLabel>STB Number</FormLabel>
-          <Input name="stbNumber" value={formData.stbNumber} onChange={handleInputChange} placeholder="Enter STB Number" />
-        </FormControl>
-
-        <FormControl>
-          <FormLabel>Customer Number</FormLabel>
-          <Input name="customerNumber" value={formData.customerNumber} onChange={handleInputChange} placeholder="Enter Customer Number" />
-        </FormControl>
-
-        <FormControl>
-          <FormLabel>Address</FormLabel>
-          <Input name="address" value={formData.address} onChange={handleInputChange} placeholder="Enter Address" />
-        </FormControl>
-
-        <FormControl>
-          <FormLabel>Installation Payment</FormLabel>
-          <Input name="installationPayment" value={formData.installationPayment} onChange={handleInputChange} type="number" placeholder="Enter Installation Payment" />
-        </FormControl>
-
-        <FormControl>
-          <FormLabel>Phone Number</FormLabel>
-          <Input name="phoneNumber" value={formData.phoneNumber} onChange={handleInputChange} type="tel" placeholder="Enter Phone Number" />
-        </FormControl>
-
-        <FormControl>
-          <FormLabel>Aadhar Number</FormLabel>
-          <Input name="aadharNumber" value={formData.aadharNumber} onChange={handleInputChange} placeholder="Enter Aadhar Number" />
-        </FormControl>
-
-        {/* Handle image upload */}
-        <FormControl>
-          <FormLabel>Photo</FormLabel>
-          <Input type="file" onChange={handleImageChange} />
-        </FormControl>
-
-        {/* Move buttons below the cards */}
-        <Button colorScheme="blue" mt={4}>
-          Save
-        </Button>
-        <Button colorScheme="blue" mt={2}>
-          Search
-        </Button>
-        <Button colorScheme="blue" mt={2}>
-          Update
-        </Button>
-        <Button colorScheme="blue" mt={2}>
-          Home
-        </Button>
-      </VStack>
-
-      {/* Data View */}
-      <Box flex="3" p={4} bg="white" borderRadius="md">
-        <Heading as="h1" size="xl" mb={6}>
-          Cable TV Subscription Data
-        </Heading>
-        {/* Display the data here */}
-        <Box>
+    <Flex minHeight="100vh" justifyContent="center" alignItems="center">
+      <Flex maxW="800px" p={4} boxShadow="md" borderRadius="md">
+        <VStack spacing={4} p={4} bg="gray.200" borderRadius="md" mr={8}>
+          <Heading as="h2" size="lg">
+            Cable TV
+          </Heading>
           <FormControl>
             <FormLabel>Customer Name</FormLabel>
-            <Input isReadOnly value={formData.customerName} />
+            <Input
+              name="customerName"
+              value={formData.customerName}
+              onChange={handleInputChange}
+              placeholder="Enter Customer Name"
+            />
           </FormControl>
           <FormControl>
             <FormLabel>STB Number</FormLabel>
-            <Input isReadOnly value={formData.stbNumber} />
+            <Input
+              name="stbNumber"
+              value={formData.stbNumber}
+              onChange={handleInputChange}
+              placeholder="Enter STB Number"
+            />
           </FormControl>
           <FormControl>
             <FormLabel>Customer Number</FormLabel>
-            <Input isReadOnly value={formData.customerNumber} />
+            <Input
+              name="customerNumber"
+              value={formData.customerNumber}
+              onChange={handleInputChange}
+              placeholder="Enter Customer Number"
+            />
           </FormControl>
           <FormControl>
             <FormLabel>Address</FormLabel>
-            <Input isReadOnly value={formData.address} />
+            <Input
+              name="address"
+              value={formData.address}
+              onChange={handleInputChange}
+              placeholder="Enter Address"
+            />
           </FormControl>
           <FormControl>
             <FormLabel>Installation Payment</FormLabel>
-            <Input isReadOnly value={formData.installationPayment} />
+            <Input
+              name="installationPayment"
+              value={formData.installationPayment}
+              onChange={handleInputChange}
+              placeholder="Enter Payment"
+            />
           </FormControl>
           <FormControl>
-            <FormLabel>Phone Number</FormLabel>
-            <Input isReadOnly value={formData.phoneNumber} />
+            <FormLabel>STB Number</FormLabel>
+            <Input
+              name="phoneNumber"
+              value={formData.phoneNumber}
+              onChange={handleInputChange}
+              placeholder="Enter Phone Number"
+            />
           </FormControl>
           <FormControl>
             <FormLabel>Aadhar Number</FormLabel>
-            <Input isReadOnly value={formData.aadharNumber} />
+            <Input
+              name="aadharNumber"
+              value={formData.aadharNumber}
+              onChange={handleInputChange}
+              placeholder="Enter Aadhar Number"
+            />
           </FormControl>
-          {/* Display the uploaded photo here */}
-          {selectedImage && <Image src={selectedImage} alt="Uploaded Photo" mt={4} />}
+          {/* Rest of the form inputs */}
+          {/* ... */}
+          <Button colorScheme="blue" mt={4} onClick={handleSave}>
+            Save
+          </Button>
+          {/* Add other buttons here */}
+          {/* ... */}
+        </VStack>
+
+        {/* Data View */}
+        <Box flex="3" p={4} bg="white" borderRadius="md">
+          <Heading as="h1" size="xl" mb={6}>
+            Cable TV Subscription Data
+          </Heading>
+          {/* Display the data as cards */}
+          <DataView cableData={cableData} />
         </Box>
-      </Box>
+      </Flex>
     </Flex>
+  );
+};
+
+// DataView component to display data as cards
+const DataView = ({ cableData }) => {
+  return (
+    <VStack spacing={6}>
+      {cableData.map((data, index) => (
+        <Box key={index} borderWidth="1px" borderRadius="md" p={4}>
+          <Text pb={4} fontWeight={'600'} color={'green'} size="larger">{index+1}. {data.customerName}</Text>
+          <FormControl>
+            <FormLabel>STB Number</FormLabel>
+            <Input isReadOnly value={data.stbNumber} />
+          </FormControl>
+          <FormControl>
+            <FormLabel>Customer Number</FormLabel>
+            <Input isReadOnly value={data.customerNumber} />
+          </FormControl>
+          <FormControl>
+            <FormLabel>Address</FormLabel>
+            <Input isReadOnly value={data.address} />
+          </FormControl>
+          <FormControl>
+            <FormLabel>Installation Payment</FormLabel>
+            <Input isReadOnly value={data.installationPayment} />
+          </FormControl>
+          <FormControl>
+            <FormLabel>Phone Number</FormLabel>
+            <Input isReadOnly value={data.phoneNumber} />
+          </FormControl>
+          <FormControl>
+            <FormLabel>Aadhar Number</FormLabel>
+            <Input isReadOnly value={data.aadharNumber} />
+          </FormControl>
+          {/* Display other form fields here */}
+          {/* ... */}
+          {data.photoUrl && <Image src={data.photoUrl} alt="Uploaded Photo" mt={4} />}
+        </Box>
+      ))}
+    </VStack>
   );
 };
 
