@@ -3,6 +3,7 @@ import { Box, Flex, Heading, FormControl, FormLabel, Input, Button, VStack, Imag
 
 const Cable = () => {
   const [formData, setFormData] = useState({
+    customerName: "",
     stbNumber: "",
     customerNumber: "",
     address: "",
@@ -32,6 +33,12 @@ const Cable = () => {
         <Heading as="h2" size="lg">
           Cable TV
         </Heading>
+        {/* Customer Name */}
+        <FormControl>
+          <FormLabel>Customer Name</FormLabel>
+          <Input name="customerName" value={formData.customerName} onChange={handleInputChange} placeholder="Enter Customer Name" />
+        </FormControl>
+
         <FormControl>
           <FormLabel>STB Number</FormLabel>
           <Input name="stbNumber" value={formData.stbNumber} onChange={handleInputChange} placeholder="Enter STB Number" />
@@ -90,6 +97,10 @@ const Cable = () => {
         </Heading>
         {/* Display the data here */}
         <Box>
+          <FormControl>
+            <FormLabel>Customer Name</FormLabel>
+            <Input isReadOnly value={formData.customerName} />
+          </FormControl>
           <FormControl>
             <FormLabel>STB Number</FormLabel>
             <Input isReadOnly value={formData.stbNumber} />
