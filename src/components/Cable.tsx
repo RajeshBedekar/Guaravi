@@ -180,7 +180,6 @@ const Cable = () => {
     </Flex>
   );
 };
-
 // DataView component to display data as cards
 const DataView = ({ cableData }) => {
   return (
