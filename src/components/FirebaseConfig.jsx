@@ -1,21 +1,21 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getAuth } from "firebase/auth"; // Import the auth module
-import { getStorage } from "firebase/storage"; // Import the storage module
+import { getAuth } from "firebase/auth";
+import { getStorage } from "firebase/storage";
 
-// Your web app's Firebase configuration (same as you provided in your question)
 const firebaseConfig = {
-  apiKey: "AIzaSyA-7pcz2Q3WzYIPmhMU0AODw1Alj2rIsb4",
-  authDomain: "rajesh-a9b6c.firebaseapp.com",
-  projectId: "rajesh-a9b6c",
-  storageBucket: "rajesh-a9b6c.appspot.com",
-  messagingSenderId: "98139337932",
-  appId: "1:98139337932:web:74f4c73f41b77da8c5be69",
-  measurementId: "G-KM7FBCD16W",
+  apiKey: import.meta.env.VITE_APP_API_KEY,
+  authDomain: import.meta.env.VITE_APP_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_APP_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_APP_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_APP_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_APP_APP_ID,
+  measurementId: import.meta.env.VITE_APP_MEASUREMENT_ID,
 };
 
+ 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+export const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 
 // Get the auth and storage instances
