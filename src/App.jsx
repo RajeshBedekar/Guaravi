@@ -3,6 +3,7 @@ import { Home } from "./components/Home";
 import { EmployeePage } from "./components/EmployeePage";
 import { EmployeeLogin } from "./components/EmployeeLogin";
 import Cable from "./components/Cable";
+import { Customer } from "./components/Customer";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <Route path="/employe" Component={EmployeePage} />
       <Route path="/admin" Component={EmployeeLogin} />
       <Route path="/cable" Component={Cable} />
+      <Route path="/customer" Component={Customer} />
     </Routes>
   );
 }

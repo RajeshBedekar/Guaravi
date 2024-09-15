@@ -1,21 +1,10 @@
 // Import required modules from firebase
-import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getFirestore, collection, addDoc, getDocs } from "firebase/firestore"; // Import the firestore module
 
 // Your web app's Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyA-7pcz2Q3WzYIPmhMU0AODw1Alj2rIsb4",
-  authDomain: "rajesh-a9b6c.firebaseapp.com",
-  projectId: "rajesh-a9b6c",
-  storageBucket: "rajesh-a9b6c.appspot.com",
-  messagingSenderId: "98139337932",
-  appId: "1:98139337932:web:74f4c73f41b77da8c5be69",
-  measurementId: "G-KM7FBCD16W",
-};
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const firestore = getFirestore(); // Get the Firestore instance
 
@@ -33,6 +22,8 @@ import {
   Image,
   Text,
 } from "@chakra-ui/react";
+import { app } from "./FirebaseConfig";
+import { signInAnonymously } from "firebase/auth";
 
 const Cable = () => {
   const [formData, setFormData] = useState({
@@ -72,6 +63,19 @@ const Cable = () => {
       console.error("Error saving data:", error);
     }
   };
+
+  const signInUser = async () => {
+    try {
+      await signInAnonymously(app);
+      console.log("User signed in anonymously");
+    } catch (error) {
+      console.error("Error signing in:", error);
+    }
+  };
+  
+  useEffect(() => {
+    signInUser(); // Automatically sign in the user on component mount
+  }, []);
 
   // Function to fetch the data from Firebase Firestore
   const fetchCableData = async () => {
@@ -186,7 +190,9 @@ const DataView = ({ cableData }) => {
     <VStack spacing={6}>
       {cableData.map((data, index) => (
         <Box key={index} borderWidth="1px" borderRadius="md" p={4}>
-          <Text pb={4} fontWeight={'600'} color={'green'} size="larger">{index+1}. {data.customerName}</Text>
+          <Text pb={4} fontWeight={"600"} color={"green"} size="larger">
+            {index + 1}. {data.customerName}
+          </Text>
           <FormControl>
             <FormLabel>STB Number</FormLabel>
             <Input isReadOnly value={data.stbNumber} />
@@ -213,7 +219,9 @@ const DataView = ({ cableData }) => {
           </FormControl>
           {/* Display other form fields here */}
           {/* ... */}
-          {data.photoUrl && <Image src={data.photoUrl} alt="Uploaded Photo" mt={4} />}
+          {data.photoUrl && (
+            <Image src={data.photoUrl} alt="Uploaded Photo" mt={4} />
+          )}
         </Box>
       ))}
     </VStack>

@@ -1,55 +1,89 @@
-import { Box, Text, useBreakpointValue } from "@chakra-ui/react";
+import { Box, Button, Text, useBreakpointValue } from "@chakra-ui/react";
 import React from "react";
+import { useNavigate } from "react-router-dom";
+
+const colorScheme = "blue";
 
 export const FrontPage = () => {
   const boxWidth = useBreakpointValue({ base: "100%", sm: "20%" });
   const fontSize = useBreakpointValue({ base: "xl", sm: "2xl" });
-
+  const navigate = useNavigate();
   return (
     <Box>
       <Box border="1px solid blue" h="82.5vh" w={boxWidth}>
         <Box pt={120}>
           <Box pl={5} pb={5}>
+            <Box pb={5}>
+              <Button onClick={()=>{
+                navigate("/customer")
+              }} colorScheme="green" fontSize={fontSize} fontWeight="bold">
+                Cable TV
+              </Button>
+            </Box>
             <Box>
-              <Text fontSize={fontSize} fontWeight="bold">
+              <Button
+                colorScheme={colorScheme}
+                fontSize={fontSize}
+                fontWeight="bold"
+              >
                 BSNL FTTH INTERNET
-              </Text>
+              </Button>
             </Box>
           </Box>
           <Box pl={5} pb={5}>
-            <Text fontSize={fontSize} fontWeight="bold">
+            <Button
+              colorScheme={colorScheme}
+              fontSize={fontSize}
+              fontWeight="bold"
+            >
               DG SERVICE
-            </Text>
+            </Button>
           </Box>
           <Box pl={5} pb={5}>
-            <Text fontSize={fontSize} fontWeight="bold">
+            <Button
+              colorScheme={colorScheme}
+              fontSize={fontSize}
+              fontWeight="bold"
+            >
               WIFI 'P' TO 'P' LINK
-            </Text>
+            </Button>
           </Box>
           <Box pl={5} pb={5}>
-            <Text fontSize={fontSize} fontWeight="bold">
+            <Button
+              colorScheme={colorScheme}
+              fontSize={fontSize}
+              fontWeight="bold"
+            >
               Electric Works
-            </Text>
+            </Button>
           </Box>
+
           <Box pl={5} pb={5}>
-            <Text fontSize={fontSize} fontWeight="bold">
-              Cable TV
-            </Text>
-          </Box>
-          <Box pl={5} pb={5}>
-            <Text fontSize={fontSize} fontWeight="bold">
+            <Button
+              colorScheme={colorScheme}
+              fontSize={fontSize}
+              fontWeight="bold"
+            >
               FRP WORKS
-            </Text>
+            </Button>
           </Box>
           <Box pl={5} pb={5}>
-            <Text fontSize={fontSize} fontWeight="bold">
+            <Button
+              colorScheme={colorScheme}
+              fontSize={fontSize}
+              fontWeight="bold"
+            >
               Fiber Optic Maintenance
-            </Text>
+            </Button>
           </Box>
           <Box pl={5} pb={5}>
-            <Text fontSize={fontSize} fontWeight="bold">
+            <Button
+              colorScheme={colorScheme}
+              fontSize={fontSize}
+              fontWeight="bold"
+            >
               Intercom Maintenance
-            </Text>
+            </Button>
           </Box>
         </Box>
       </Box>
